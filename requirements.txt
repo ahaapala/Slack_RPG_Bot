@@ -1,0 +1,5 @@
+redis
+ttrpg_core
+slack_pybot
+py_kanka_wrapper
+pytest
