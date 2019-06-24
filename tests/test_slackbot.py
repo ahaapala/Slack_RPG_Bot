@@ -1,5 +1,5 @@
 from pytest import fixture
-from Dice_Statistics.slackbot import RpgBot
+from slack_rpg_bot.slackbot import RpgBot
 
 class TestMyBot(object):
 
