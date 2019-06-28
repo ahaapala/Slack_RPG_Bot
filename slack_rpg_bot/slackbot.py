@@ -5,8 +5,8 @@ import traceback
 import slack_pybot
 from slack_pybot.data import Event, Command
 from redis import StrictRedis
-from die import dice_pool
-from kanka_wrapper import kanka_wrapper
+from ttrpg_core.die import dice_pool
+from py_kanka_wrapper.kanka_wrapper import kanka_wrapper
 
 
 class RpgBot(slack_pybot.PyBot):
@@ -73,7 +73,7 @@ class RpgBot(slack_pybot.PyBot):
 
         return False
 
-    def _messageEventToCommand(self, event: Event):
+    def _messageEventToCommand(self, event):
         for trigger in self._triggers.keys():
             if event['text'].startswith(trigger):
                 args = event['text'][len(trigger):].strip().split()
@@ -96,11 +96,23 @@ class RpgBot(slack_pybot.PyBot):
 
 
 def main(args):
-    if 'SLACK_TOKEN' in os.environ:
-        SLACK_TOKEN = os.environ['SLACK_TOKEN']
 
-    if 'KANKA_TOKEN' in os.environ:
+    # Not that we want to pass secrets from the command line but we do want a
+    # way to also pass them in from other sources.  Throw an error.  We can't
+    # proceed with out these specified.
+    if args['slack_token']:
+        SLACK_TOKEN = args['slack_token']
+    elif 'SLACK_TOKEN' in os.environ:
+        SLACK_TOKEN = os.environ['SLACK_TOKEN']
+    else:
+        raise('No Slack token provided')
+
+    if args['kanka_token']:
+        KANKA_TOKEN = args['kanka_token']
+    elif 'KANKA_TOKEN' in os.environ:
         KANKA_TOKEN = os.environ['KANKA_TOKEN']
+    else:
+        raise('No Kanka token provided')
 
     db = StrictRedis(host='localhost', port=6379, db=0)
     bot = slack_pybot.Bot(name='TestRPGApp', icon_emoji=':)')

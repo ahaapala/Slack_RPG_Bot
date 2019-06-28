@@ -1,6 +1,11 @@
+boto3
+dataclasses
+Flask
 redis
-ttrpg_core
 slack_pybot
-py_kanka_wrapper
 pytest
-slackclient
+slackclient==2.0.0
+websocket
+websocket-client
+git+https://github.com/ahaapala/TTRPG_Core.git
+git+https://github.com/ahaapala/py_kanka_wrapper.git
